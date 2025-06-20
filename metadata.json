@@ -1,0 +1,8 @@
+{
+  "name": "ananya's copy of FirePulse MVP - TV Content Discovery",
+  "description": "A React web application for discovering TV content, managing user profiles, and participating in watch parties. It features recommendations, mood-based filtering, and content details.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "prompt": ""
+}
