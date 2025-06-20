@@ -57,8 +57,8 @@
 <img width="600" alt="Screenshot 2025-06-21 at 12 50 24 AM" src="https://github.com/user-attachments/assets/4b61e4ad-2123-4f0c-a4df-7e1c261bf071" />
 
 6. **Discover Friends and Suggest Movies**  
-<img width="450" height="370" alt="Screenshot 2025-06-21 at 12 49 08 AM" src="https://github.com/user-attachments/assets/78b01081-f900-45d0-bbd5-7d7091e37e97" />
-<img width="450" height="370" alt="Screenshot 2025-06-21 at 12 50 03 AM" src="https://github.com/user-attachments/assets/12003d35-dd9e-4e94-bd94-a9f857abeb4b" />
+<img width="400" height="370" alt="Screenshot 2025-06-21 at 12 49 08 AM" src="https://github.com/user-attachments/assets/78b01081-f900-45d0-bbd5-7d7091e37e97" />
+<img width="400" height="370" alt="Screenshot 2025-06-21 at 12 50 03 AM" src="https://github.com/user-attachments/assets/12003d35-dd9e-4e94-bd94-a9f857abeb4b" />
 
 7. **Snap Stories**  
 <img width="700" alt="Screenshot 2025-06-21 at 12 48 51 AM" src="https://github.com/user-attachments/assets/18c5c63e-529c-461c-993d-20d13ed15f50" />
