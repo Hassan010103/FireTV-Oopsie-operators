@@ -1655,7 +1655,7 @@ const App: React.FC = () => {
                 <button
                     onClick={() => handleStartWatchParty(null)}
                     className="flex-shrink-0 bg-gradient-to-r from-purple-600 to-sky-500 hover:from-purple-700 hover:to-sky-600 text-white font-semibold py-5 px-12 sm:px-16 rounded-xl shadow-2xl transition-all transform hover:scale-105 active:scale-95 text-xl sm:text-2xl whitespace-nowrap"
-                    style={{ minWidth: '260px', minHeight: '64px' }}
+                    style={{ minWidth: '200px', minHeight: '55px' }}
                 >
                     Start Movie Matcher
                 </button>
