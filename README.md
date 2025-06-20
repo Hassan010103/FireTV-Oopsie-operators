@@ -42,25 +42,32 @@
 > _Replace these placeholders with actual screenshots when available._
 
 1. **Homepage & Navigation**  
-   _[Screenshot: Main dashboard with navigation bar, mood selector, and trending carousel]_  
+<img width="700" alt="Screenshot 2025-06-21 at 12 42 35 AM" src="https://github.com/user-attachments/assets/e8535cdd-be87-4c71-9c11-bd906d8e429a" />
 
 2. **Watch Party Screen**  
    _[Screenshot: Watch party interface with chat and synchronized playback]_  
+<img width="650" alt="Screenshot 2025-06-21 at 12 48 06 AM" src="https://github.com/user-attachments/assets/6c5803fa-9eb1-4927-9ea9-281db842eab3" />
 
 3. **Movie Matcher**  
    _[Screenshot: Movie matcher swipe interface for group selection]_  
+<img width="600" alt="Screenshot 2025-06-21 at 12 51 17 AM" src="https://github.com/user-attachments/assets/19c59516-75e7-43e6-a94b-bb90a488ce63" />
 
 4. **Content Detail View**  
    _[Screenshot: Detailed view of a movie/show, with friend likes and suggestions]_  
+<img width="700" alt="Screenshot 2025-06-21 at 12 51 01 AM" src="https://github.com/user-attachments/assets/6ef1eda4-fbc5-4fa3-921c-24ecc20f65a4" />
 
 5. **AI Smart Recap Modal**  
    _[Screenshot: AI-generated recap modal before resuming playback]_  
+<img width="600" alt="Screenshot 2025-06-21 at 12 50 24 AM" src="https://github.com/user-attachments/assets/4b61e4ad-2123-4f0c-a4df-7e1c261bf071" />
 
-6. **Peak Moments Graph**  
+6. **Discover Friends and Suggest Movies**  
    _[Screenshot: Peak Watch Graph showing most exciting moments in a movie]_  
+<img width="600" alt="Screenshot 2025-06-21 at 12 49 08 AM" src="https://github.com/user-attachments/assets/78b01081-f900-45d0-bbd5-7d7091e37e97" />
+<img width="500" alt="Screenshot 2025-06-21 at 12 50 03 AM" src="https://github.com/user-attachments/assets/12003d35-dd9e-4e94-bd94-a9f857abeb4b" />
 
 7. **Snap Stories**  
    _[Screenshot: Snap story viewer and snap creation modal]_  
+<img width="700" alt="Screenshot 2025-06-21 at 12 48 51 AM" src="https://github.com/user-attachments/assets/18c5c63e-529c-461c-993d-20d13ed15f50" />
 
 ---
 
