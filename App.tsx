@@ -171,6 +171,9 @@ const App: React.FC = () => {
 
   const [platformAction, setPlatformAction] = useState<'filter' | 'goto'>('filter');
 
+  // Add state to track liked movies
+  const [likedMovieIds, setLikedMovieIds] = React.useState<string[]>([]);
+
 
   const handleSearchInputChange = (query: string) => {
     setSearchQuery(query);
@@ -1887,20 +1890,23 @@ const App: React.FC = () => {
             </div>
           );
         }
-          return <ContentDetailView
-                    content={selectedContent}
-                    onStartWatchParty={() => handleStartWatchParty(selectedContent)}
-                    onBack={() => {
-                        const validPreviousViews: AppView[] = ['home', 'search', 'suggestions', 'discoverUsers', 'movieMatcher', 'watchParty', 'momentz', 'vibeCircleView']; 
-                        if (previousViewForContentDetail && validPreviousViews.includes(previousViewForContentDetail)) {
-                            handleNavigation(previousViewForContentDetail);
-                        } else {
-                            handleNavigation('home');
-                        }
-                    }}
-                    onOpenSuggestModal={handleOpenSuggestModal}
-                    onPlayStandalone={handlePlayStandalone}
-                 />;
+        return <ContentDetailView
+          content={selectedContent}
+          onStartWatchParty={() => handleStartWatchParty(selectedContent)}
+          onBack={() => {
+            const validPreviousViews: AppView[] = ['home', 'search', 'suggestions', 'discoverUsers', 'movieMatcher', 'watchParty', 'momentz', 'vibeCircleView']; 
+            if (previousViewForContentDetail && validPreviousViews.includes(previousViewForContentDetail)) {
+              handleNavigation(previousViewForContentDetail);
+            } else {
+              handleNavigation('home');
+            }
+          }}
+          onOpenSuggestModal={handleOpenSuggestModal}
+          onPlayStandalone={handlePlayStandalone}
+          onLike={handleLikeMovie}
+          // Pass liked state to ContentDetailView
+          liked={likedMovieIds.includes(selectedContent.contentId)}
+        />;
       default:
         return <div className="text-center py-10 text-slate-400">Loading...</div>;
     }
@@ -1909,6 +1915,17 @@ const App: React.FC = () => {
   const friendsForModal = currentUserProfile
     ? MOCK_POTENTIAL_FRIENDS.filter(p => p.userId !== currentUserProfile.userId && actualFriends.includes(p.userId))
     : [];
+
+  // Handler for like button
+  const handleLikeMovie = (content: Content, liked: boolean) => {
+    setLikedMovieIds((prev) => {
+      if (liked) {
+        return [...prev, content.contentId];
+      } else {
+        return prev.filter(id => id !== content.contentId);
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-900 text-slate-100">

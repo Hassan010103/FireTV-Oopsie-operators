@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Content, Platform, AppView } from '../types'; // Added AppView
 import { PLATFORM_BADGE_STYLES } from '../constants';
@@ -9,7 +7,9 @@ interface ContentDetailViewProps {
   onStartWatchParty: () => void;
   onBack: () => void; // This will be called, App.tsx decides where to go
   onOpenSuggestModal: (content: Content) => void;
-  onPlayStandalone: (content: Content) => void; 
+  onPlayStandalone: (content: Content) => void;
+  onLike?: (content: Content, liked: boolean) => void; // New prop for like functionality
+  liked?: boolean; // Add liked prop
 }
 
 const ArrowLeftIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
@@ -39,6 +39,11 @@ const ShareIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) 
     <path d="M13.202 5.235A3.492 3.492 0 0011.5 4.5a3.5 3.5 0 100 7A3.492 3.492 0 0013.202 10.765a.5.5 0 000-.53l-2.904-4.356a.5.5 0 00-.854-.146L6.53 9.392a.5.5 0 00-.146.854l4.356 2.904a.5.5 0 00.53 0l.808-.538a3.502 3.502 0 002.122 5.388.5.5 0 00.53-.854l-2.608-3.912a.5.5 0 00-.854-.146L8.608 16.07a.5.5 0 00-.146.854l3.912 2.608A3.503 3.503 0 0013 5.5c0-.043.003-.086.008-.128L13.202 5.235z" />
   </svg>
 );
+const HeartIcon: React.FC<{ filled?: boolean; className?: string }> = ({ filled = false, className = "w-6 h-6" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={filled ? "#ef4444" : "none"} viewBox="0 0 24 24" stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 21C12 21 4 13.5 4 8.5C4 5.42 6.42 3 9.5 3C11.24 3 12.91 3.81 14 5.08C15.09 3.81 16.76 3 18.5 3C21.58 3 24 5.42 24 8.5C24 13.5 16 21 16 21H12Z" />
+  </svg>
+);
 
 
 const InfoItem: React.FC<{label: string, value?: string | string[]}> = ({label, value}) => {
@@ -52,7 +57,7 @@ const InfoItem: React.FC<{label: string, value?: string | string[]}> = ({label, 
 };
 
 
-const ContentDetailView: React.FC<ContentDetailViewProps> = ({ content, onStartWatchParty, onBack, onOpenSuggestModal, onPlayStandalone }) => {
+const ContentDetailView: React.FC<ContentDetailViewProps> = ({ content, onStartWatchParty, onBack, onOpenSuggestModal, onPlayStandalone, onLike, liked = false }) => {
   const platformColor = PLATFORM_BADGE_STYLES[content.platform] || PLATFORM_BADGE_STYLES[Platform.Unknown];
   const durationHours = content.duration ? Math.floor(content.duration / 3600) : 0;
   const durationMinutes = content.duration ? Math.floor((content.duration % 3600) / 60) : 0;
@@ -66,6 +71,10 @@ const ContentDetailView: React.FC<ContentDetailViewProps> = ({ content, onStartW
     } else {
       alert(`No direct way to play ${content.title}. Try Watch Party or check availability on ${content.platform}.`);
     }
+  };
+
+  const handleLike = () => {
+    if (onLike) onLike(content, !liked);
   };
 
   return (
@@ -82,6 +91,14 @@ const ContentDetailView: React.FC<ContentDetailViewProps> = ({ content, onStartW
             alt={content.title}
             className="w-full rounded-lg shadow-xl object-cover aspect-[2/3]"
           />
+          <button
+            onClick={handleLike}
+            className={`mt-4 flex items-center justify-center w-full py-2 rounded-lg border transition-colors ${liked ? 'bg-red-100 border-red-400' : 'bg-slate-800 border-slate-600 hover:bg-slate-700'}`}
+            aria-label={liked ? 'Unlike this movie' : 'Like this movie'}
+          >
+            <HeartIcon filled={liked} className="w-6 h-6 mr-2" />
+            <span className={`font-semibold ${liked ? 'text-red-500' : 'text-slate-200'}`}>{liked ? 'Liked' : 'Like'}</span>
+          </button>
         </div>
         <div className="md:w-2/3 lg:w-3/4">
           <span className={`${platformColor} text-white px-3 py-1 text-xs font-semibold rounded-full inline-block mb-2`}>
