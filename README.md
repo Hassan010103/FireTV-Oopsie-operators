@@ -30,7 +30,7 @@
 - **🧠 Contextual Recommendations**: Dynamic content suggestions based on time, mood, behavior, and social signals.
 - **🖼️ Picture-in-Picture Mode**: Watch a movie and live match simultaneously, without switching screens.
 - **⏪ Smart Recap**: Personalized, AI-generated recaps of skipped or key scenes before resuming playback.
-- **📈 Trending Across OTTs**: View trending movies/shows from Hotstar, Netflix, etc., via smart homepage scraping.
+- **📈 Centralised Dashboard for cross platform viewing**: View trending movies/shows from Hotstar, Netflix, etc., via smart homepage scraping.
 - **🤝 Connect & Suggest**: Find friends, suggest content, and share moments easily.
 - **📊 Peak Moments**: Visualize and relive the most exciting moments in movies with our Peak Watch Graph.
 - **📸 Snap Stories**: Capture and share 10-second highlights (snaps) with friends.
@@ -62,8 +62,8 @@
 
 6. **Discover Friends and Suggest Movies**  
    _[Screenshot: Peak Watch Graph showing most exciting moments in a movie]_  
-<img width="600" alt="Screenshot 2025-06-21 at 12 49 08 AM" src="https://github.com/user-attachments/assets/78b01081-f900-45d0-bbd5-7d7091e37e97" />
-<img width="500" alt="Screenshot 2025-06-21 at 12 50 03 AM" src="https://github.com/user-attachments/assets/12003d35-dd9e-4e94-bd94-a9f857abeb4b" />
+<img width="500" height="370" alt="Screenshot 2025-06-21 at 12 49 08 AM" src="https://github.com/user-attachments/assets/78b01081-f900-45d0-bbd5-7d7091e37e97" />
+<img width="500" height="370" alt="Screenshot 2025-06-21 at 12 50 03 AM" src="https://github.com/user-attachments/assets/12003d35-dd9e-4e94-bd94-a9f857abeb4b" />
 
 7. **Snap Stories**  
    _[Screenshot: Snap story viewer and snap creation modal]_  
