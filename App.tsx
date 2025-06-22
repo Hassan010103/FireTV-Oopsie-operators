@@ -1940,7 +1940,7 @@ const App: React.FC = () => {
           onSearchSubmit={handleSearchSubmit}
           onClearSearch={handleClearSearch}
       />
-      <main className={`flex-grow container mx-auto px-2 sm:px-4 py-4 ${isAuthenticated ? 'pt-20 md:pt-24 lg:pt-20' : 'pt-4'}`}>
+      <main className={`flex-grow w-[90%] mx-auto px-2 sm:px-4 py-4 ${isAuthenticated ? 'pt-20 md:pt-24 lg:pt-20' : 'pt-4'}`}>
         {renderView()}
       </main>
 
