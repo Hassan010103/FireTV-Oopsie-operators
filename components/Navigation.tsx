@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { AppView, UserProfile, Content, Platform } from '../types'; // Added Content & Platform
 
 interface NavigationProps {
@@ -98,6 +98,29 @@ const Navigation: React.FC<NavigationProps> = ({
 
   const visibleNavItems = navItems.filter(item => !item.authRequired || isAuthenticated);
 
+  const recognitionRef = useRef(null);
+  const [isListening, setIsListening] = useState(false);
+
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.onresult = (event) => {
+        onSearchInputChange(event.results[0][0].transcript);
+        setIsListening(false);
+      };
+      recognition.onstart = () => setIsListening(true);
+      recognition.onend = () => setIsListening(false);
+      recognitionRef.current = recognition;
+    }
+  }, [onSearchInputChange]);
+
+  const handleVoiceSearch = () => {
+    if (recognitionRef.current) recognitionRef.current.start();
+  };
+
   const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       onSearchSubmit();
@@ -156,7 +179,7 @@ const Navigation: React.FC<NavigationProps> = ({
                   value={searchQuery}
                   onChange={(e) => onSearchInputChange(e.target.value)}
                   onKeyDown={handleSearchKeyDown}
-                  className="block w-full md:w-48 lg:w-64 pl-9 pr-8 py-2 border border-slate-700 bg-slate-700/80 text-slate-200 placeholder-slate-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm transition-all"
+                  className="block w-full md:w-48 lg:w-64 pl-9 pr-14 py-2 border border-slate-700 bg-slate-700/80 text-slate-200 placeholder-slate-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm transition-all"
                   placeholder="Search movies..."
                   autoComplete="off"
                   aria-label="Search movies"
@@ -164,12 +187,25 @@ const Navigation: React.FC<NavigationProps> = ({
                 {searchQuery && (
                   <button
                     onClick={onClearSearch}
-                    className="absolute inset-y-0 right-0 pr-2 flex items-center text-slate-400 hover:text-slate-200"
+                    type="button"
+                    className="absolute inset-y-0 right-10 flex items-center px-2 text-slate-400 hover:text-red-400 focus:outline-none"
                     aria-label="Clear search"
                   >
-                    <XMarkIcon />
+                    <XMarkIcon className="h-4 w-4" />
                   </button>
                 )}
+                {/* Mic button at extreme right inside input */}
+                <button
+                  type="button"
+                  onClick={handleVoiceSearch}
+                  aria-label="Voice Search"
+                  className={`absolute inset-y-0 right-2 flex items-center px-2 rounded-full z-10 ${isListening ? 'bg-purple-600 text-white animate-pulse' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                  style={{height: '100%'}}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75v1.5m0 0a3.75 3.75 0 01-3.75-3.75h7.5A3.75 3.75 0 0112 20.25zm0-1.5V4.5a3.75 3.75 0 017.5 0v6a3.75 3.75 0 01-7.5 0v-6a3.75 3.75 0 017.5 0v6a3.75 3.75 0 01-7.5 0" />
+                  </svg>
+                </button>
               </div>
             )}
 

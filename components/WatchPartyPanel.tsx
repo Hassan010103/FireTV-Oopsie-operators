@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { WatchPartySession, UserProfile, ChatMessage, GuessingGame, GuessingGameGuess, Content, OngoingPartyDisplayItem, Platform } from '../types';
 import PeakWatchGraph from './PeakWatchGraph.tsx';
@@ -80,6 +79,11 @@ const UsersIconSolid: React.FC<{ className?: string }> = ({ className = "w-4 h-4
   </svg>
 );
 
+const MagnifyingGlassIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={className}>
+    <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
+  </svg>
+);
 
 interface WatchPartyPanelProps {
   session: WatchPartySession | null; // Can be null if no active party
@@ -122,6 +126,8 @@ const WatchPartyPanel: React.FC<WatchPartyPanelProps> = ({
   const [isHostSettingCorrectAnswer, setIsHostSettingCorrectAnswer] = useState<boolean>(false);
   const [hostSelectedCorrectOption, setHostSelectedCorrectOption] = useState<number | null>(null);
   
+  const recognitionRef = useRef(null);
+  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
     setSession(initialSession);
@@ -267,6 +273,22 @@ const WatchPartyPanel: React.FC<WatchPartyPanelProps> = ({
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [chatMessages]);
+
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.onresult = (event) => {
+        setNewMessage(event.results[0][0].transcript);
+        setIsListening(false);
+      };
+      recognition.onstart = () => setIsListening(true);
+      recognition.onend = () => setIsListening(false);
+      recognitionRef.current = recognition;
+    }
+  }, []);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -628,6 +650,9 @@ const WatchPartyPanel: React.FC<WatchPartyPanelProps> = ({
     );
   };
 
+  const handleVoiceChat = () => {
+    if (recognitionRef.current) recognitionRef.current.start();
+  };
 
   if (!session) {
     // No active session, show "Start a Party" and ongoing friend parties
@@ -831,16 +856,34 @@ const WatchPartyPanel: React.FC<WatchPartyPanelProps> = ({
                 ))}
                 {chatMessages.length === 0 && <p className="text-sm text-slate-400 text-center py-4">No messages yet. Say hi!</p>}
             </div>
-            <form onSubmit={handleSendMessage} className="mt-2 sm:mt-3 flex gap-1 sm:gap-2">
+            <form onSubmit={handleSendMessage} className="relative flex items-center mt-2">
+                {/* Mic button at extreme left inside input */}
+                <button
+                    type="button"
+                    onClick={handleVoiceChat}
+                    aria-label="Voice Chat"
+                    className={`absolute inset-y-0 left-0 flex items-center px-3 rounded-l-md z-10 ${isListening ? 'bg-purple-600 text-white animate-pulse' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                    style={{height: '100%'}}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75v1.5m0 0a3.75 3.75 0 01-3.75-3.75h7.5A3.75 3.75 0 0112 20.25zm0-1.5V4.5a3.75 3.75 0 017.5 0v6a3.75 3.75 0 01-7.5 0v-6a3.75 3.75 0 017.5 0v6a3.75 3.75 0 01-7.5 0" />
+                    </svg>
+                </button>
                 <input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-grow bg-slate-700 text-slate-100 p-2 sm:p-2.5 rounded-md border border-slate-600 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 outline-none"
+                    type="text"
+                    value={newMessage}
+                    onChange={e => setNewMessage(e.target.value)}
+                    className="flex-grow px-3 py-2 rounded-l-md border border-slate-700 bg-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all pl-12 pr-14"
+                    placeholder="Type a message..."
+                    autoComplete="off"
+                    aria-label="Chat message"
                 />
-                <button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white p-2 sm:p-2.5 rounded-md font-semibold transition-colors flex items-center justify-center">
-                <SendIcon className="w-4 h-4 sm:w-5 sm:h-5"/>
+                <button
+                    type="submit"
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-none rounded-r-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                    aria-label="Send message"
+                >
+                    <SendIcon className="w-5 h-5" />
                 </button>
             </form>
             </div>
