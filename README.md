@@ -85,39 +85,154 @@
 
 ## 💻 Installation & Local Setup
 
-### Prerequisites
-- Node.js (v16+ recommended)
+This project is a full-stack movie recommendation and watch party platform. It includes:
+- A React frontend (already Vercel-ready)
+- A Node.js/Express backend (with socket.io for real-time watch parties)
+- A Python/Flask microservice for mood-based movie recommendations ("Mood backend")
+
+---
+
+## 1. Running the Mood Backend (Python/Flask) Locally
+
+### **A. Prerequisites**
+- Python 3.8+
+- pip
+
+### **B. Setup**
+1. **Navigate to the project root:**
+   ```sh
+   cd backend
+   # or wherever your mood_service.py and requirements.txt are
+   ```
+2. **Install dependencies:**
+   ```sh
+   pip install -r requirements.txt
+   ```
+   Example `requirements.txt`:
+   ```
+   flask
+   joblib
+   scikit-learn
+   numpy
+   pandas
+   ```
+3. **Ensure your model file is present:**
+   - Place `movie_recommender_data.pkl` in the correct directory (e.g., `ML models/`).
+
+4. **Run the Flask app:**
+   ```sh
+   python mood_service.py
+   # or python backend/mood_service.py if that's your file
+   ```
+   - The service will start on `http://127.0.0.1:10000` (or as set in your code).
+
+5. **Test the endpoint:**
+   ```sh
+   curl -X POST http://127.0.0.1:10000/predict -H "Content-Type: application/json" -d '{"your": "input"}'
+   ```
+
+---
+
+## 2. Running the Node.js Backend (Watch Party API) Locally
+
+### **A. Prerequisites**
+- Node.js 16+
 - npm
 - MongoDB (local or Atlas)
-- Python 3.x (for ML microservice, optional)
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/yourusername/firepulse.git
-cd firepulse
+### **B. Setup**
+1. **Navigate to the backend directory:**
+   ```sh
+   cd backend
+   ```
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+3. **Create a `.env` file in `backend/` with:**
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_super_secret
+   ```
+4. **Start the backend:**
+   ```sh
+   npm start
+   ```
+   - The server will run on `http://localhost:5000`
+
+---
+
+## 3. Running the Frontend Locally
+
+### **A. Prerequisites**
+- Node.js 16+
+- npm
+
+### **B. Setup**
+1. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+2. **Create a `.env` file in the root with:**
+   ```
+   VITE_API_URL=http://localhost:5000/api
+   VITE_MOOD_API_URL=http://localhost:10000
+   ```
+3. **Start the frontend:**
+   ```sh
+   npm run dev
+   ```
+   - The app will run on `http://localhost:5173`
+
+---
+
+## 4. Testing the Watch Party Feature Locally
+
+1. **Start all services:**
+   - Start the Node.js backend (`npm start` in `backend/`)
+   - Start the Python mood backend (`python mood_service.py`)
+   - Start the frontend (`npm run dev`)
+2. **Open two browser windows (or use two devices):**
+   - Go to `http://localhost:5173` in both.
+3. **Register/login as two different users.**
+4. **User 1:**
+   - Pick a movie and click **Start Watch Party**.
+   - Copy the join code shown at the top.
+5. **User 2:**
+   - Click **Join Watch Party** and enter the code.
+6. **Test features:**
+   - Both users should see each other in the participants list.
+   - Try chat, play/pause sync, and other real-time features.
+
+---
+
+## 5. Notes
+- The Python mood backend is only needed for mood-based recommendations.
+- The Node.js backend is required for all watch party and user features.
+- For production, deploy the Node.js backend and Python backend separately (see deployment section above).
+
+---
+
+## 6. Troubleshooting
+- If you see 404s for `/socket.io/` on the Python backend, make sure your frontend is connecting to the Node.js backend for socket.io, not the mood backend.
+- Check your `.env` files and environment variables for correct URLs.
+
+---
+
+## 7. Project Structure Reference
 ```
-
-### 2. Frontend Setup
-```bash
-npm install
-# Create a .env.local file in the root with your Gemini API key:
-echo "GEMINI_API_KEY=your_gemini_api_key" > .env.local
-npm run dev
+FireTV-Oopsie-operators/
+  backend/
+    src/
+      index.js         # Node.js/Express entry
+      routes/
+      models/
+    mood_service.py    # Flask app for mood model
+    requirements.txt   # For Python service
+    package.json       # For Node.js backend
+    .env               # For local dev
+  ML models/
+    movie_recommender_data.pkl
+  components/
+  ... (frontend code)
 ```
-- The app will run at `http://localhost:5173` by default.
-
-### 3. Backend Setup
-```bash
-cd backend
-npm install
-# Create a .env file in backend/ with the following:
-# MONGODB_URI=mongodb://localhost:27017/firepulse
-# JWT_SECRET=your_jwt_secret
-# PORT=5000
-npm run dev
-```
-- The backend API runs at `http://localhost:5000` by default.
-
-### 4. (Optional) ML Microservice
-- Go to `ML models/` and run the Python notebook or script for recommendations.
-- Ensure the backend is configured to call the ML microservice if you want advanced recommendations.
