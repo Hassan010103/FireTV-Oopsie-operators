@@ -7,6 +7,7 @@ const router = express.Router();
 
 // Register
 router.post('/register', async (req, res) => {
+  console.log('Register endpoint hit', req.body);
   try {
     const { userId, displayName, password } = req.body;
     if (!userId || !displayName || !password) {
@@ -30,12 +31,14 @@ router.post('/register', async (req, res) => {
     await user.save();
     res.status(201).json({ message: 'User registered' });
   } catch (err) {
+    console.error('Register error:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
 // Login
 router.post('/login', async (req, res) => {
+  console.log('Login endpoint hit', req.body);
   try {
     const { userId, password } = req.body;
     const user = await User.findOne({ userId });
@@ -43,8 +46,22 @@ router.post('/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
     const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { userId: user.userId, displayName: user.displayName, avatarUrl: user.avatarUrl } });
+    res.json({
+      token,
+      user: {
+        userId: user.userId,
+        displayName: user.displayName,
+        avatarUrl: user.avatarUrl,
+        preferences: user.preferences || { genres: [], platforms: [], mood_history: [] },
+        viewing_history: user.viewing_history || [],
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+        friends: user.friends || [],
+        friendRequests: user.friendRequests || [],
+      }
+    });
   } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ error: err.message });
   }
 });
